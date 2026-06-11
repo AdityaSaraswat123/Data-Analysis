@@ -1,0 +1,1401 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "e9c30426",
+   "metadata": {
+    "_cell_guid": "b1076dfc-b9ad-4769-8c92-a6c4dae69d19",
+    "_uuid": "8f2839f25d086af736a60e9eeb907d3b93b6e0e5",
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:37.252992Z",
+     "iopub.status.busy": "2026-06-11T06:33:37.252597Z",
+     "iopub.status.idle": "2026-06-11T06:33:40.985997Z",
+     "shell.execute_reply": "2026-06-11T06:33:40.985099Z"
+    },
+    "papermill": {
+     "duration": 3.741756,
+     "end_time": "2026-06-11T06:33:40.988270+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:37.246514+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "ebf6e3ee",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:40.998028Z",
+     "iopub.status.busy": "2026-06-11T06:33:40.997044Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.160230Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.159192Z"
+    },
+    "papermill": {
+     "duration": 0.170414,
+     "end_time": "2026-06-11T06:33:41.162512+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:40.992098+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "df=pd.read_csv('/kaggle/input/datasets/adityasaraswatt/airbnb/datasets.csv',encoding_errors='ignore')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "1104b2cb",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.171779Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.171036Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.220239Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.219300Z"
+    },
+    "papermill": {
+     "duration": 0.056114,
+     "end_time": "2026-06-11T06:33:41.222241+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.166127+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>id</th>\n",
+       "      <th>name</th>\n",
+       "      <th>host_id</th>\n",
+       "      <th>host_name</th>\n",
+       "      <th>neighbourhood_group</th>\n",
+       "      <th>neighbourhood</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "      <th>room_type</th>\n",
+       "      <th>price</th>\n",
+       "      <th>...</th>\n",
+       "      <th>last_review</th>\n",
+       "      <th>reviews_per_month</th>\n",
+       "      <th>calculated_host_listings_count</th>\n",
+       "      <th>availability_365</th>\n",
+       "      <th>number_of_reviews_ltm</th>\n",
+       "      <th>license</th>\n",
+       "      <th>rating</th>\n",
+       "      <th>bedrooms</th>\n",
+       "      <th>beds</th>\n",
+       "      <th>baths</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1.312228e+06</td>\n",
+       "      <td>Rental unit in Brooklyn · ★5.0 · 1 bedroom</td>\n",
+       "      <td>7130382</td>\n",
+       "      <td>Walter</td>\n",
+       "      <td>Brooklyn</td>\n",
+       "      <td>Clinton Hill</td>\n",
+       "      <td>40.683710</td>\n",
+       "      <td>-73.964610</td>\n",
+       "      <td>Private room</td>\n",
+       "      <td>55.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>20/12/15</td>\n",
+       "      <td>0.03</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>No License</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>Not specified</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>4.527754e+07</td>\n",
+       "      <td>Rental unit in New York · ★4.67 · 2 bedrooms ·...</td>\n",
+       "      <td>51501835</td>\n",
+       "      <td>Jeniffer</td>\n",
+       "      <td>Manhattan</td>\n",
+       "      <td>Hell's Kitchen</td>\n",
+       "      <td>40.766610</td>\n",
+       "      <td>-73.988100</td>\n",
+       "      <td>Entire home/apt</td>\n",
+       "      <td>144.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>01/05/23</td>\n",
+       "      <td>0.24</td>\n",
+       "      <td>139.0</td>\n",
+       "      <td>364.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>No License</td>\n",
+       "      <td>4.67</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>9.710000e+17</td>\n",
+       "      <td>Rental unit in New York · ★4.17 · 1 bedroom · ...</td>\n",
+       "      <td>528871354</td>\n",
+       "      <td>Joshua</td>\n",
+       "      <td>Manhattan</td>\n",
+       "      <td>Chelsea</td>\n",
+       "      <td>40.750764</td>\n",
+       "      <td>-73.994605</td>\n",
+       "      <td>Entire home/apt</td>\n",
+       "      <td>187.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>18/12/23</td>\n",
+       "      <td>1.67</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>343.0</td>\n",
+       "      <td>6.0</td>\n",
+       "      <td>Exempt</td>\n",
+       "      <td>4.17</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>3.857863e+06</td>\n",
+       "      <td>Rental unit in New York · ★4.64 · 1 bedroom · ...</td>\n",
+       "      <td>19902271</td>\n",
+       "      <td>John And Catherine</td>\n",
+       "      <td>Manhattan</td>\n",
+       "      <td>Washington Heights</td>\n",
+       "      <td>40.835600</td>\n",
+       "      <td>-73.942500</td>\n",
+       "      <td>Private room</td>\n",
+       "      <td>120.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>17/09/23</td>\n",
+       "      <td>1.38</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>363.0</td>\n",
+       "      <td>12.0</td>\n",
+       "      <td>No License</td>\n",
+       "      <td>4.64</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>4.089661e+07</td>\n",
+       "      <td>Condo in New York · ★4.91 · Studio · 1 bed · 1...</td>\n",
+       "      <td>61391963</td>\n",
+       "      <td>Stay With Vibe</td>\n",
+       "      <td>Manhattan</td>\n",
+       "      <td>Murray Hill</td>\n",
+       "      <td>40.751120</td>\n",
+       "      <td>-73.978600</td>\n",
+       "      <td>Entire home/apt</td>\n",
+       "      <td>85.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>03/12/23</td>\n",
+       "      <td>0.24</td>\n",
+       "      <td>133.0</td>\n",
+       "      <td>335.0</td>\n",
+       "      <td>3.0</td>\n",
+       "      <td>No License</td>\n",
+       "      <td>4.91</td>\n",
+       "      <td>Studio</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 22 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "             id                                               name    host_id  \\\n",
+       "0  1.312228e+06         Rental unit in Brooklyn · ★5.0 · 1 bedroom    7130382   \n",
+       "1  4.527754e+07  Rental unit in New York · ★4.67 · 2 bedrooms ·...   51501835   \n",
+       "2  9.710000e+17  Rental unit in New York · ★4.17 · 1 bedroom · ...  528871354   \n",
+       "3  3.857863e+06  Rental unit in New York · ★4.64 · 1 bedroom · ...   19902271   \n",
+       "4  4.089661e+07  Condo in New York · ★4.91 · Studio · 1 bed · 1...   61391963   \n",
+       "\n",
+       "            host_name neighbourhood_group       neighbourhood   latitude  \\\n",
+       "0              Walter            Brooklyn        Clinton Hill  40.683710   \n",
+       "1            Jeniffer           Manhattan      Hell's Kitchen  40.766610   \n",
+       "2              Joshua           Manhattan             Chelsea  40.750764   \n",
+       "3  John And Catherine           Manhattan  Washington Heights  40.835600   \n",
+       "4      Stay With Vibe           Manhattan         Murray Hill  40.751120   \n",
+       "\n",
+       "   longitude        room_type  price  ...  last_review  reviews_per_month  \\\n",
+       "0 -73.964610     Private room   55.0  ...     20/12/15               0.03   \n",
+       "1 -73.988100  Entire home/apt  144.0  ...     01/05/23               0.24   \n",
+       "2 -73.994605  Entire home/apt  187.0  ...     18/12/23               1.67   \n",
+       "3 -73.942500     Private room  120.0  ...     17/09/23               1.38   \n",
+       "4 -73.978600  Entire home/apt   85.0  ...     03/12/23               0.24   \n",
+       "\n",
+       "  calculated_host_listings_count  availability_365  number_of_reviews_ltm  \\\n",
+       "0                            1.0               0.0                    0.0   \n",
+       "1                          139.0             364.0                    2.0   \n",
+       "2                            1.0             343.0                    6.0   \n",
+       "3                            2.0             363.0                   12.0   \n",
+       "4                          133.0             335.0                    3.0   \n",
+       "\n",
+       "      license  rating bedrooms beds          baths  \n",
+       "0  No License       5        1    1  Not specified  \n",
+       "1  No License    4.67        2    1              1  \n",
+       "2      Exempt    4.17        1    2              1  \n",
+       "3  No License    4.64        1    1              1  \n",
+       "4  No License    4.91   Studio    1              1  \n",
+       "\n",
+       "[5 rows x 22 columns]"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "db846928",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.231813Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.231443Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.254691Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.253617Z"
+    },
+    "papermill": {
+     "duration": 0.030563,
+     "end_time": "2026-06-11T06:33:41.256879+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.226316+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>id</th>\n",
+       "      <th>name</th>\n",
+       "      <th>host_id</th>\n",
+       "      <th>host_name</th>\n",
+       "      <th>neighbourhood_group</th>\n",
+       "      <th>neighbourhood</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "      <th>room_type</th>\n",
+       "      <th>price</th>\n",
+       "      <th>...</th>\n",
+       "      <th>last_review</th>\n",
+       "      <th>reviews_per_month</th>\n",
+       "      <th>calculated_host_listings_count</th>\n",
+       "      <th>availability_365</th>\n",
+       "      <th>number_of_reviews_ltm</th>\n",
+       "      <th>license</th>\n",
+       "      <th>rating</th>\n",
+       "      <th>bedrooms</th>\n",
+       "      <th>beds</th>\n",
+       "      <th>baths</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>20765</th>\n",
+       "      <td>2.473690e+07</td>\n",
+       "      <td>Rental unit in New York · ★4.75 · 1 bedroom · ...</td>\n",
+       "      <td>186680487</td>\n",
+       "      <td>Henry D</td>\n",
+       "      <td>Manhattan</td>\n",
+       "      <td>Lower East Side</td>\n",
+       "      <td>40.711380</td>\n",
+       "      <td>-73.991560</td>\n",
+       "      <td>Private room</td>\n",
+       "      <td>45.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>29/09/23</td>\n",
+       "      <td>1.81</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>157.0</td>\n",
+       "      <td>12.0</td>\n",
+       "      <td>No License</td>\n",
+       "      <td>4.75</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20766</th>\n",
+       "      <td>2.835711e+06</td>\n",
+       "      <td>Rental unit in New York · ★4.46 · 1 bedroom · ...</td>\n",
+       "      <td>3237504</td>\n",
+       "      <td>Aspen</td>\n",
+       "      <td>Manhattan</td>\n",
+       "      <td>Greenwich Village</td>\n",
+       "      <td>40.730580</td>\n",
+       "      <td>-74.000700</td>\n",
+       "      <td>Entire home/apt</td>\n",
+       "      <td>105.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>01/07/23</td>\n",
+       "      <td>0.48</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>No License</td>\n",
+       "      <td>4.46</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20767</th>\n",
+       "      <td>5.182527e+07</td>\n",
+       "      <td>Rental unit in New York · ★4.93 · 1 bedroom · ...</td>\n",
+       "      <td>304317395</td>\n",
+       "      <td>Jeff</td>\n",
+       "      <td>Manhattan</td>\n",
+       "      <td>Hell's Kitchen</td>\n",
+       "      <td>40.757350</td>\n",
+       "      <td>-73.993430</td>\n",
+       "      <td>Entire home/apt</td>\n",
+       "      <td>299.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>08/12/23</td>\n",
+       "      <td>2.09</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>27.0</td>\n",
+       "      <td>No License</td>\n",
+       "      <td>4.93</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20768</th>\n",
+       "      <td>7.830000e+17</td>\n",
+       "      <td>Rental unit in New York · ★5.0 · 1 bedroom · 1...</td>\n",
+       "      <td>163083101</td>\n",
+       "      <td>Marissa</td>\n",
+       "      <td>Manhattan</td>\n",
+       "      <td>Chinatown</td>\n",
+       "      <td>40.713750</td>\n",
+       "      <td>-73.991470</td>\n",
+       "      <td>Entire home/apt</td>\n",
+       "      <td>115.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>17/09/23</td>\n",
+       "      <td>0.91</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>363.0</td>\n",
+       "      <td>7.0</td>\n",
+       "      <td>No License</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20769</th>\n",
+       "      <td>5.660000e+17</td>\n",
+       "      <td>Rental unit in Queens · ★4.89 · 1 bedroom · 1 ...</td>\n",
+       "      <td>93827372</td>\n",
+       "      <td>Glenroy</td>\n",
+       "      <td>Queens</td>\n",
+       "      <td>Rosedale</td>\n",
+       "      <td>40.658874</td>\n",
+       "      <td>-73.728651</td>\n",
+       "      <td>Private room</td>\n",
+       "      <td>102.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>10/12/23</td>\n",
+       "      <td>4.50</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>62.0</td>\n",
+       "      <td>OSE-STRREG-0000513</td>\n",
+       "      <td>4.89</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 22 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                 id                                               name  \\\n",
+       "20765  2.473690e+07  Rental unit in New York · ★4.75 · 1 bedroom · ...   \n",
+       "20766  2.835711e+06  Rental unit in New York · ★4.46 · 1 bedroom · ...   \n",
+       "20767  5.182527e+07  Rental unit in New York · ★4.93 · 1 bedroom · ...   \n",
+       "20768  7.830000e+17  Rental unit in New York · ★5.0 · 1 bedroom · 1...   \n",
+       "20769  5.660000e+17  Rental unit in Queens · ★4.89 · 1 bedroom · 1 ...   \n",
+       "\n",
+       "         host_id host_name neighbourhood_group      neighbourhood   latitude  \\\n",
+       "20765  186680487   Henry D           Manhattan    Lower East Side  40.711380   \n",
+       "20766    3237504     Aspen           Manhattan  Greenwich Village  40.730580   \n",
+       "20767  304317395      Jeff           Manhattan     Hell's Kitchen  40.757350   \n",
+       "20768  163083101   Marissa           Manhattan          Chinatown  40.713750   \n",
+       "20769   93827372   Glenroy              Queens           Rosedale  40.658874   \n",
+       "\n",
+       "       longitude        room_type  price  ...  last_review  reviews_per_month  \\\n",
+       "20765 -73.991560     Private room   45.0  ...     29/09/23               1.81   \n",
+       "20766 -74.000700  Entire home/apt  105.0  ...     01/07/23               0.48   \n",
+       "20767 -73.993430  Entire home/apt  299.0  ...     08/12/23               2.09   \n",
+       "20768 -73.991470  Entire home/apt  115.0  ...     17/09/23               0.91   \n",
+       "20769 -73.728651     Private room  102.0  ...     10/12/23               4.50   \n",
+       "\n",
+       "      calculated_host_listings_count  availability_365  number_of_reviews_ltm  \\\n",
+       "20765                            1.0             157.0                   12.0   \n",
+       "20766                            1.0               0.0                    1.0   \n",
+       "20767                            1.0               0.0                   27.0   \n",
+       "20768                            1.0             363.0                    7.0   \n",
+       "20769                            1.0               0.0                   62.0   \n",
+       "\n",
+       "                  license  rating bedrooms beds baths  \n",
+       "20765          No License    4.75        1    1     1  \n",
+       "20766          No License    4.46        1    2     1  \n",
+       "20767          No License    4.93        1    1     1  \n",
+       "20768          No License       5        1    1     1  \n",
+       "20769  OSE-STRREG-0000513    4.89        1    1     1  \n",
+       "\n",
+       "[5 rows x 22 columns]"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.tail()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "39390ca0",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.267331Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.266941Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.273030Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.272062Z"
+    },
+    "papermill": {
+     "duration": 0.013796,
+     "end_time": "2026-06-11T06:33:41.275065+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.261269+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(20770, 22)"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "739cb645",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.285358Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.284956Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.316214Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.315200Z"
+    },
+    "papermill": {
+     "duration": 0.038963,
+     "end_time": "2026-06-11T06:33:41.318384+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.279421+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 20770 entries, 0 to 20769\n",
+      "Data columns (total 22 columns):\n",
+      " #   Column                          Non-Null Count  Dtype  \n",
+      "---  ------                          --------------  -----  \n",
+      " 0   id                              20770 non-null  float64\n",
+      " 1   name                            20770 non-null  object \n",
+      " 2   host_id                         20770 non-null  int64  \n",
+      " 3   host_name                       20770 non-null  object \n",
+      " 4   neighbourhood_group             20770 non-null  object \n",
+      " 5   neighbourhood                   20763 non-null  object \n",
+      " 6   latitude                        20763 non-null  float64\n",
+      " 7   longitude                       20763 non-null  float64\n",
+      " 8   room_type                       20763 non-null  object \n",
+      " 9   price                           20736 non-null  float64\n",
+      " 10  minimum_nights                  20763 non-null  float64\n",
+      " 11  number_of_reviews               20763 non-null  float64\n",
+      " 12  last_review                     20763 non-null  object \n",
+      " 13  reviews_per_month               20763 non-null  float64\n",
+      " 14  calculated_host_listings_count  20763 non-null  float64\n",
+      " 15  availability_365                20763 non-null  float64\n",
+      " 16  number_of_reviews_ltm           20763 non-null  float64\n",
+      " 17  license                         20770 non-null  object \n",
+      " 18  rating                          20770 non-null  object \n",
+      " 19  bedrooms                        20770 non-null  object \n",
+      " 20  beds                            20770 non-null  int64  \n",
+      " 21  baths                           20770 non-null  object \n",
+      "dtypes: float64(10), int64(2), object(10)\n",
+      "memory usage: 3.5+ MB\n"
+     ]
+    }
+   ],
+   "source": [
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "29801552",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.329385Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.329020Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.379552Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.378504Z"
+    },
+    "papermill": {
+     "duration": 0.058587,
+     "end_time": "2026-06-11T06:33:41.381571+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.322984+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>id</th>\n",
+       "      <th>host_id</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "      <th>price</th>\n",
+       "      <th>minimum_nights</th>\n",
+       "      <th>number_of_reviews</th>\n",
+       "      <th>reviews_per_month</th>\n",
+       "      <th>calculated_host_listings_count</th>\n",
+       "      <th>availability_365</th>\n",
+       "      <th>number_of_reviews_ltm</th>\n",
+       "      <th>beds</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>count</th>\n",
+       "      <td>2.077000e+04</td>\n",
+       "      <td>2.077000e+04</td>\n",
+       "      <td>20763.000000</td>\n",
+       "      <td>20763.000000</td>\n",
+       "      <td>20736.000000</td>\n",
+       "      <td>20763.000000</td>\n",
+       "      <td>20763.000000</td>\n",
+       "      <td>20763.000000</td>\n",
+       "      <td>20763.000000</td>\n",
+       "      <td>20763.000000</td>\n",
+       "      <td>20763.000000</td>\n",
+       "      <td>20770.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>mean</th>\n",
+       "      <td>3.033858e+17</td>\n",
+       "      <td>1.749049e+08</td>\n",
+       "      <td>40.726821</td>\n",
+       "      <td>-73.939179</td>\n",
+       "      <td>187.714940</td>\n",
+       "      <td>28.558493</td>\n",
+       "      <td>42.610605</td>\n",
+       "      <td>1.257589</td>\n",
+       "      <td>18.866686</td>\n",
+       "      <td>206.067957</td>\n",
+       "      <td>10.848962</td>\n",
+       "      <td>1.723592</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>std</th>\n",
+       "      <td>3.901221e+17</td>\n",
+       "      <td>1.725657e+08</td>\n",
+       "      <td>0.060293</td>\n",
+       "      <td>0.061403</td>\n",
+       "      <td>1023.245124</td>\n",
+       "      <td>33.532697</td>\n",
+       "      <td>73.523401</td>\n",
+       "      <td>1.904472</td>\n",
+       "      <td>70.921443</td>\n",
+       "      <td>135.077259</td>\n",
+       "      <td>21.354876</td>\n",
+       "      <td>1.211993</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>min</th>\n",
+       "      <td>2.595000e+03</td>\n",
+       "      <td>1.678000e+03</td>\n",
+       "      <td>40.500314</td>\n",
+       "      <td>-74.249840</td>\n",
+       "      <td>10.000000</td>\n",
+       "      <td>1.000000</td>\n",
+       "      <td>1.000000</td>\n",
+       "      <td>0.010000</td>\n",
+       "      <td>1.000000</td>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>1.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25%</th>\n",
+       "      <td>2.707260e+07</td>\n",
+       "      <td>2.041184e+07</td>\n",
+       "      <td>40.684159</td>\n",
+       "      <td>-73.980755</td>\n",
+       "      <td>80.000000</td>\n",
+       "      <td>30.000000</td>\n",
+       "      <td>4.000000</td>\n",
+       "      <td>0.210000</td>\n",
+       "      <td>1.000000</td>\n",
+       "      <td>87.000000</td>\n",
+       "      <td>1.000000</td>\n",
+       "      <td>1.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>50%</th>\n",
+       "      <td>4.992852e+07</td>\n",
+       "      <td>1.086990e+08</td>\n",
+       "      <td>40.722890</td>\n",
+       "      <td>-73.949597</td>\n",
+       "      <td>125.000000</td>\n",
+       "      <td>30.000000</td>\n",
+       "      <td>14.000000</td>\n",
+       "      <td>0.650000</td>\n",
+       "      <td>2.000000</td>\n",
+       "      <td>215.000000</td>\n",
+       "      <td>3.000000</td>\n",
+       "      <td>1.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>75%</th>\n",
+       "      <td>7.220000e+17</td>\n",
+       "      <td>3.143997e+08</td>\n",
+       "      <td>40.763106</td>\n",
+       "      <td>-73.917475</td>\n",
+       "      <td>199.000000</td>\n",
+       "      <td>30.000000</td>\n",
+       "      <td>49.000000</td>\n",
+       "      <td>1.800000</td>\n",
+       "      <td>5.000000</td>\n",
+       "      <td>353.000000</td>\n",
+       "      <td>15.000000</td>\n",
+       "      <td>2.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>max</th>\n",
+       "      <td>1.050000e+18</td>\n",
+       "      <td>5.504035e+08</td>\n",
+       "      <td>40.911147</td>\n",
+       "      <td>-73.713650</td>\n",
+       "      <td>100000.000000</td>\n",
+       "      <td>1250.000000</td>\n",
+       "      <td>1865.000000</td>\n",
+       "      <td>75.490000</td>\n",
+       "      <td>713.000000</td>\n",
+       "      <td>365.000000</td>\n",
+       "      <td>1075.000000</td>\n",
+       "      <td>42.000000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                 id       host_id      latitude     longitude          price  \\\n",
+       "count  2.077000e+04  2.077000e+04  20763.000000  20763.000000   20736.000000   \n",
+       "mean   3.033858e+17  1.749049e+08     40.726821    -73.939179     187.714940   \n",
+       "std    3.901221e+17  1.725657e+08      0.060293      0.061403    1023.245124   \n",
+       "min    2.595000e+03  1.678000e+03     40.500314    -74.249840      10.000000   \n",
+       "25%    2.707260e+07  2.041184e+07     40.684159    -73.980755      80.000000   \n",
+       "50%    4.992852e+07  1.086990e+08     40.722890    -73.949597     125.000000   \n",
+       "75%    7.220000e+17  3.143997e+08     40.763106    -73.917475     199.000000   \n",
+       "max    1.050000e+18  5.504035e+08     40.911147    -73.713650  100000.000000   \n",
+       "\n",
+       "       minimum_nights  number_of_reviews  reviews_per_month  \\\n",
+       "count    20763.000000       20763.000000       20763.000000   \n",
+       "mean        28.558493          42.610605           1.257589   \n",
+       "std         33.532697          73.523401           1.904472   \n",
+       "min          1.000000           1.000000           0.010000   \n",
+       "25%         30.000000           4.000000           0.210000   \n",
+       "50%         30.000000          14.000000           0.650000   \n",
+       "75%         30.000000          49.000000           1.800000   \n",
+       "max       1250.000000        1865.000000          75.490000   \n",
+       "\n",
+       "       calculated_host_listings_count  availability_365  \\\n",
+       "count                    20763.000000      20763.000000   \n",
+       "mean                        18.866686        206.067957   \n",
+       "std                         70.921443        135.077259   \n",
+       "min                          1.000000          0.000000   \n",
+       "25%                          1.000000         87.000000   \n",
+       "50%                          2.000000        215.000000   \n",
+       "75%                          5.000000        353.000000   \n",
+       "max                        713.000000        365.000000   \n",
+       "\n",
+       "       number_of_reviews_ltm          beds  \n",
+       "count           20763.000000  20770.000000  \n",
+       "mean               10.848962      1.723592  \n",
+       "std                21.354876      1.211993  \n",
+       "min                 0.000000      1.000000  \n",
+       "25%                 1.000000      1.000000  \n",
+       "50%                 3.000000      1.000000  \n",
+       "75%                15.000000      2.000000  \n",
+       "max              1075.000000     42.000000  "
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "59100558",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.392458Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.392129Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.411860Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.410974Z"
+    },
+    "papermill": {
+     "duration": 0.027622,
+     "end_time": "2026-06-11T06:33:41.413831+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.386209+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "id                                 0\n",
+       "name                               0\n",
+       "host_id                            0\n",
+       "host_name                          0\n",
+       "neighbourhood_group                0\n",
+       "neighbourhood                      7\n",
+       "latitude                           7\n",
+       "longitude                          7\n",
+       "room_type                          7\n",
+       "price                             34\n",
+       "minimum_nights                     7\n",
+       "number_of_reviews                  7\n",
+       "last_review                        7\n",
+       "reviews_per_month                  7\n",
+       "calculated_host_listings_count     7\n",
+       "availability_365                   7\n",
+       "number_of_reviews_ltm              7\n",
+       "license                            0\n",
+       "rating                             0\n",
+       "bedrooms                           0\n",
+       "beds                               0\n",
+       "baths                              0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "c74e7370",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.424953Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.424572Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.445485Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.444476Z"
+    },
+    "papermill": {
+     "duration": 0.029211,
+     "end_time": "2026-06-11T06:33:41.447782+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.418571+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "df.dropna(inplace =True) # drop whole rows"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "7d9032cb",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.459220Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.458861Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.477953Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.477148Z"
+    },
+    "papermill": {
+     "duration": 0.027197,
+     "end_time": "2026-06-11T06:33:41.479847+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.452650+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "id                                0\n",
+       "name                              0\n",
+       "host_id                           0\n",
+       "host_name                         0\n",
+       "neighbourhood_group               0\n",
+       "neighbourhood                     0\n",
+       "latitude                          0\n",
+       "longitude                         0\n",
+       "room_type                         0\n",
+       "price                             0\n",
+       "minimum_nights                    0\n",
+       "number_of_reviews                 0\n",
+       "last_review                       0\n",
+       "reviews_per_month                 0\n",
+       "calculated_host_listings_count    0\n",
+       "availability_365                  0\n",
+       "number_of_reviews_ltm             0\n",
+       "license                           0\n",
+       "rating                            0\n",
+       "bedrooms                          0\n",
+       "beds                              0\n",
+       "baths                             0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "5679bef4",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.492068Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.491663Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.497361Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.496441Z"
+    },
+    "papermill": {
+     "duration": 0.014588,
+     "end_time": "2026-06-11T06:33:41.499303+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.484715+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(20736, 22)"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "92699870",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.510616Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.510253Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.550442Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.549471Z"
+    },
+    "papermill": {
+     "duration": 0.048412,
+     "end_time": "2026-06-11T06:33:41.552539+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.504127+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.int64(12)"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# dealing with duplicated values\n",
+    "\n",
+    "df.duplicated().sum() # no of duplicate values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "a2399bfe",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.564431Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.564088Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.601824Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.600850Z"
+    },
+    "papermill": {
+     "duration": 0.046521,
+     "end_time": "2026-06-11T06:33:41.604175+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.557654+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "df.drop_duplicates(inplace=True) # dropping duplicates"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "99718d69",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.615748Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.615406Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.651111Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.650145Z"
+    },
+    "papermill": {
+     "duration": 0.04396,
+     "end_time": "2026-06-11T06:33:41.653299+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.609339+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.int64(0)"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.duplicated().sum() #no  of duplicates left"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "65cc8451",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.665351Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.664756Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.672182Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.671282Z"
+    },
+    "papermill": {
+     "duration": 0.015821,
+     "end_time": "2026-06-11T06:33:41.674229+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.658408+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "id                                float64\n",
+       "name                               object\n",
+       "host_id                             int64\n",
+       "host_name                          object\n",
+       "neighbourhood_group                object\n",
+       "neighbourhood                      object\n",
+       "latitude                          float64\n",
+       "longitude                         float64\n",
+       "room_type                          object\n",
+       "price                             float64\n",
+       "minimum_nights                    float64\n",
+       "number_of_reviews                 float64\n",
+       "last_review                        object\n",
+       "reviews_per_month                 float64\n",
+       "calculated_host_listings_count    float64\n",
+       "availability_365                  float64\n",
+       "number_of_reviews_ltm             float64\n",
+       "license                            object\n",
+       "rating                             object\n",
+       "bedrooms                           object\n",
+       "beds                                int64\n",
+       "baths                              object\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# type casting\n",
+    "df.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "9c9bd6f1",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.686408Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.686076Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.692172Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.691413Z"
+    },
+    "papermill": {
+     "duration": 0.014665,
+     "end_time": "2026-06-11T06:33:41.694079+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.679414+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "df['id']=df['id'].astype(object)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "d070010b",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.706423Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.706104Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.712415Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.711663Z"
+    },
+    "papermill": {
+     "duration": 0.015028,
+     "end_time": "2026-06-11T06:33:41.714309+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.699281+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "\n",
+    "df['host_id']=df['host_id'].astype(object)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "3b169a3f",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.726175Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.725755Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.732573Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.731735Z"
+    },
+    "papermill": {
+     "duration": 0.014942,
+     "end_time": "2026-06-11T06:33:41.734374+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.719432+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "id                                 object\n",
+       "name                               object\n",
+       "host_id                            object\n",
+       "host_name                          object\n",
+       "neighbourhood_group                object\n",
+       "neighbourhood                      object\n",
+       "latitude                          float64\n",
+       "longitude                         float64\n",
+       "room_type                          object\n",
+       "price                             float64\n",
+       "minimum_nights                    float64\n",
+       "number_of_reviews                 float64\n",
+       "last_review                        object\n",
+       "reviews_per_month                 float64\n",
+       "calculated_host_listings_count    float64\n",
+       "availability_365                  float64\n",
+       "number_of_reviews_ltm             float64\n",
+       "license                            object\n",
+       "rating                             object\n",
+       "bedrooms                           object\n",
+       "beds                                int64\n",
+       "baths                              object\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "75febec3",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-06-11T06:33:41.746546Z",
+     "iopub.status.busy": "2026-06-11T06:33:41.746202Z",
+     "iopub.status.idle": "2026-06-11T06:33:41.750278Z",
+     "shell.execute_reply": "2026-06-11T06:33:41.749370Z"
+    },
+    "papermill": {
+     "duration": 0.012442,
+     "end_time": "2026-06-11T06:33:41.752216+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.739774+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# univariate analysis\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3b464871",
+   "metadata": {
+    "papermill": {
+     "duration": 0.0052,
+     "end_time": "2026-06-11T06:33:41.762761+00:00",
+     "exception": false,
+     "start_time": "2026-06-11T06:33:41.757561+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [
+    {
+     "databundleVersionId": 17357863,
+     "datasetId": 10491347,
+     "sourceId": 16365634,
+     "sourceType": "datasetVersion"
+    }
+   ],
+   "dockerImageVersionId": 31328,
+   "isGpuEnabled": false,
+   "isInternetEnabled": false,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.12"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 8.836528,
+   "end_time": "2026-06-11T06:33:42.388865+00:00",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2026-06-11T06:33:33.552337+00:00",
+   "version": "2.7.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
